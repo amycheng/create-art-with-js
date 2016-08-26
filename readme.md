@@ -17,5 +17,5 @@ Hello! This repo contains materials related to the talk I gave at JSConf Iceland
 
 # Got Questions??? Want feedback on your art made with JavaScript???
 - e-mail me (amy at amycheng.info)
-- tweet at me ([@am3thyst](http://twitter.com/am3thyst)
+- tweet at me ([@am3thyst](http://twitter.com/am3thyst))
 - Submit a [GitHub Issue](https://github.com/amycheng/create-art-with-js/issues) **I’d prefer this, so others can learn**
