@@ -1,0 +1,149 @@
+<html>
+  <head>
+    <title>Spot Painting Generator</title>
+    <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+
+  <script src="js/p5.js"></script>
+  <script type="text/javascript" src="js/dat.gui.js"></script>
+
+  <script>
+
+    //mapping HSB values (max=100) to RGB values (max=100)
+    var normalize = function(val){
+      return Math.floor(val * 255 / 100);
+    }
+
+    // scoped P5 logic
+    var paint = function( p ) {
+
+      // create a color object
+      var color = function() {
+        var color1 = machineState.colorVal1;
+        var color2 = machineState.colorVal2;
+        var color3 = machineState.colorVal3;
+
+        if( machineState.colorMode === 'RGB' ){
+          p.colorMode(p.RBG, 255);
+          color1 = normalize(machineState.colorVal1);
+          color2 = normalize(machineState.colorVal2);
+          color3 = normalize(machineState.colorVal3);
+       }else{
+          p.colorMode(p.HSB, 100);
+        }
+
+        var _color1 = p.random(0, color1);
+        var _color2 = p.random(0, color2);
+        var _color3 = p.random(0, color3);
+
+        // freeze values (don't randomize)
+        if(!machineState.colorVal1Rando){_color1 = color1;}
+        if(!machineState.colorVal2Rando){_color2 = color2;}
+        if(!machineState.colorVal3Rando){_color3 = color3;}
+
+        return p.color(
+          _color1,
+          _color2,
+          _color3
+        );
+      };
+
+      var diameter = 25;
+      var padding = 10;
+      var spacing = diameter + diameter/2 + padding;
+
+      var spotColors = [];
+
+      // generate colors for all spots
+      var generateColors = function () {
+        //figure out the number of spots we have
+        // using Math.floor because division spits out a float
+        var numberOfSpots = Math.floor(p.width/spacing)*Math.floor(p.height/spacing);
+        spotColors = [];
+        for (var i = 0; i < numberOfSpots; i++) {
+          spotColors.push(color());
+        }
+      };
+
+      var saveImage = function() {
+        console.log("saving new image");
+        p.saveCanvas(machineState.colorMode+machineState.colorVal1+machineState.colorVal2+machineState.colorVal3, 'png');
+      }
+
+      p.setup = function() {
+        p.createCanvas(800, 500);
+        p.background(255);
+        generateColors();
+      };
+
+      p.draw = function() {
+        var index = 0;
+
+        p.noStroke();
+
+        for ( var i = 1; i < p.width/spacing ; i++) {
+          for ( var j = 1; j< p.height/spacing; j++) {
+
+            var spotColor=spotColors[index];
+            p.fill(spotColor);
+            p.noStroke();
+            p.ellipse(i*spacing, j*spacing, 25, 25);
+
+            index++;
+            if(index===160){
+              index=0;
+            }
+
+          }
+        };
+      };
+
+      //state object for dat.gui
+      var machineState = {
+        colorMode: 'RGB',
+        colorVal1: 100,
+        colorVal2: 100,
+        colorVal3: 100,
+        colorVal1Rando: true,
+        colorVal2Rando: true,
+        colorVal3Rando: true,
+        render: generateColors,
+        save: saveImage
+      };
+
+      var gui = new dat.GUI();
+      gui.add(machineState, 'colorMode', ['RGB', 'HSB']);
+      var autoRender1 = gui.add(machineState, 'colorVal1', 0, 100);
+      var autoRender2 = gui.add(machineState, 'colorVal2', 0, 100);
+      var autoRender3 = gui.add(machineState, 'colorVal3', 0, 100);
+      gui.add(machineState, 'colorVal1Rando');
+      gui.add(machineState, 'colorVal2Rando');
+      gui.add(machineState, 'colorVal3Rando');
+      gui.add(machineState, 'render');
+      gui.add(machineState, 'save');
+
+      autoRender1.onChange(generateColors);
+      autoRender2.onChange(generateColors);
+      autoRender3.onChange(generateColors);
+
+    };
+
+    var art = new p5(paint);
+  </script>
+  </body>
+</html>

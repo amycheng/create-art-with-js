@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+
+  <script src="js/p5.js"></script>
+  <script type="text/javascript" src="js/dat.gui.js"></script>
+
+  <script>
+
+    var paint = function( p ) {
+
+      var box = function( xPos, yPos, height, width, color){
+        p.strokeWeight(10);
+        p.fill(color);
+        p.line(xPos,0, xPos, p.height);
+        p.line(0, yPos,p.width,  yPos);
+        p.line(xPos+width,0, xPos+width, p.height);
+        p.line(0, yPos+height,p.width,  yPos+height);
+        p.rect(xPos,  yPos, width, height);
+      };
+
+      p.setup = function() {
+        p.createCanvas(800, 500);
+        p.background(255);
+        p.frameRate(5);
+        p.noLoop();
+      };
+
+      p.draw = function() {
+        p.background(255);
+
+        box(p.random(0, p.width-200), p.random(0, p.height-200), p.random(10,200), p.random(10,200), p.color(255,0,0));
+        box(p.random(0, p.width-200), p.random(0, p.height-200), p.random(10,200), p.random(10,200), p.color(0,0,255));
+        box(p.random(0, p.width-200), p.random(0, p.height-200), p.random(10,200), p.random(10,200), p.color(255,255,0));
+      };
+    };
+
+    var art = new p5(paint);
+
+  </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+  <script src="js/p5.js"></script>
+
+
+  <script>
+  var startPos;
+  var endPos;
+  var steering;
+  var deviation = 100;
+  var numberOfSwoosh = 5;
+  var numberOfStrokes = 8;
+
+    function setup(){
+      createCanvas(800, 500);
+      background(255);
+
+      for (var i = 0; i < numberOfSwoosh; i++) {
+
+        noFill()
+        stroke(0);
+        strokeWeight(random(75));
+        strokeCap(ROUND);
+        curve(
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation),
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation),
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation),
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation)
+        );
+      };
+
+      for (var i = 0; i < numberOfStrokes; i++) {
+        stroke(0);
+        strokeCap(PROJECT);
+        strokeWeight(noise(i)*20);
+        line(
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation),
+          randomGaussian(width/2, deviation), randomGaussian(height/2, deviation)
+        );
+      };
+    }
+  </script>
+  </body>
+</html>

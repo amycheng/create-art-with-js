@@ -1,0 +1,41 @@
+<html>
+<head>
+  <title></title>
+  <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.22/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.22/addons/p5.dom.js"></script>
+  <script language="javascript" type="text/javascript" src="js/flocking/boid.js"></script>
+  <script language="javascript" type="text/javascript" src="js/flocking/flock.js"></script>
+  <script language="javascript" type="text/javascript" src="js/flocking/sketch.js"></script>
+  <script type="text/javascript" src="dat.gui.js"></script>
+      <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+
+</head>
+<body>
+  <script>
+    var methods = {
+      start: function(){ loop(); },
+      stop: function(){ noLoop(); },
+      save: function(){ saveCanvas(); }
+    };
+    var gui = new dat.GUI();
+    gui.add(methods, 'start');
+    gui.add(methods,'stop');
+    gui.add(methods,'save');
+
+  </script>
+
+</body>
+</html>

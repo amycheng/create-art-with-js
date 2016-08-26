@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+  <script src="js/p5.js"></script>
+
+  <script>
+
+    var paint = function( p ) {
+      var color = function() {
+        return p.fill( p.random(0, 255), p.random(0,255), p.random(0,255));
+      };
+      var diameter = 25;
+      var padding = 10;
+      var spacing = diameter + diameter/2 + padding;
+
+      p.setup = function() {
+        p.createCanvas(800, 500);
+        p.background(255);
+        p.noLoop();
+      };
+
+
+      p.draw = function() {
+        for ( var i = 1; i < p.width/spacing ; i++) {
+          for ( var j = 1; j< p.height/spacing; j++) {
+          color();
+          p.noStroke();
+          p.ellipse(i*spacing, j*spacing, 25, 25);
+          }
+        };
+      };
+    };
+
+    var art = new p5(paint);
+
+  </script>
+  </body>
+</html>

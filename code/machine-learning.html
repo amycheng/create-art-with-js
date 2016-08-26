@@ -1,0 +1,131 @@
+<html>
+<head>
+  <title></title>
+  <style>
+
+  body {
+    background-color: #f5f5f5;
+    font-size: 16px;
+  }
+
+  .wrapper {
+    margin: 0 auto;
+    text-align: center;
+    width: 1000px;
+  }
+
+  canvas {
+    display: inline-block;
+    margin: auto;
+  }
+  #target {
+    display: none;
+  }
+  #target.show {
+    display: inline-block;
+  }
+
+
+  </style>
+</head>
+
+<body>
+
+  <script type="text/javascript" src="js/synaptic.js"></script>
+  <script type="text/javascript" src="js/dat.gui.js"></script>
+
+  <div class="wrapper">
+    <img src="portrait.jpg" id="target" alt="">
+    <canvas id="_canvas" height="300" width="400"></canvas>
+  </div>
+
+
+  <script>
+    //Initialize Synaptic
+    var Neuron = synaptic.Neuron,
+    Layer = synaptic.Layer,
+    Network = synaptic.Network,
+    Trainer = synaptic.Trainer,
+    Architect = synaptic.Architect;
+
+    var canvas = document.getElementById('_canvas');
+    var context = canvas.getContext('2d');
+
+    var perceptron = new Architect.Perceptron(2,15,3);;
+    var iteration = 0;
+    var to = null;
+    var px = null;
+    var imageData = null;
+    var maxIteration = 1000;
+
+    var sourceImage = document.getElementById('target');
+
+    var getPixelData = function(imageObj){
+
+      var imageContext = canvas.getContext('2d');
+      var imageData;
+      imageContext.drawImage(imageObj, 0, 0);
+      imageData = imageContext.getImageData(0, 0, 300, 300);
+      return imageData.data;
+    }
+
+    var imgData = getPixelData(sourceImage);
+
+    var iterate = function(){
+      for (var x = 0; x < 300; x+=1)
+      {
+        for(var y = 0; y < 300; y+=1)
+        {
+          var dynamicRate =  .01/(1+.0005*iteration);
+          perceptron.activate([x/300,y/300]);
+          perceptron.propagate(dynamicRate, pixel(imgData,x,y));
+        }
+      }
+      preview();
+    };
+
+    var pixel = function(data,x,y){
+
+      var red = data[((300 * y) + x) * 4];
+      var green = data[((300 * y) + x) * 4 + 1];
+      var blue = data[((300 * y) + x) * 4 + 2];
+
+      return [red / 255, green / 255, blue / 255];
+    };
+
+    var preview = function(){
+      imageData = context.getImageData(0, 0, 300, 300);
+      for (var x = 0; x < 300; x++)
+      {
+        for(var y = 0; y < 300; y++)
+        {
+          var rgb = perceptron.activate([x/300, y/300]);
+          imageData.data[((300 * y) + x) * 4] = (rgb[0] )* 255;
+          imageData.data[((300 * y) + x) * 4 + 1] = (rgb[1] ) * 255;
+          imageData.data[((300 * y) + x) * 4 + 2] = (rgb[2] ) * 255;
+        }
+      }
+
+      context.putImageData(imageData,0,0);
+      requestAnimationFrame(iterate);
+    };
+    preview();
+
+    var ux = {
+      showImage: function() {
+        sourceImage.classList.add("show");
+      },
+      hideImage: function() {
+        sourceImage.classList.remove("show");
+      }
+    }
+    var gui = new dat.GUI();
+    gui.add(ux, 'showImage');
+    gui.add(ux, 'hideImage');
+
+
+    </script>
+
+
+  </body>
+  </html>

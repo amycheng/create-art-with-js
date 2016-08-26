@@ -1,0 +1,131 @@
+<html>
+<head>
+  <title></title>
+  <style>
+
+  body {
+    background-color: #f5f5f5;
+    font-size: 16px;
+  }
+
+  canvas {
+    display: block;
+    margin: 1em auto;
+  }
+
+
+  </style>
+</head>
+
+<body>
+  <script src="js/p5.js"></script>
+
+
+  <script>
+
+  var paint = function( p ) {
+
+    var Cell = function( initX, initY, height, width, color){
+
+      var targetLocation = p.createVector(p.random(0,600), p.random(0,300));
+      var xPos = initX;
+      var yPos = initY;
+
+      this.getLocation = function() {
+        return p.createVector(xPos, yPos);
+      }
+
+      this.update = function() {
+        var currentLocation = p.createVector(xPos, yPos);
+        var steering;
+
+        if(Math.floor(targetLocation.x) !== Math.floor(currentLocation.x) && Math.floor(targetLocation.y) !== Math.floor(currentLocation.y)){
+          steering = p5.Vector.sub(targetLocation,currentLocation);
+          steering.normalize();
+          xPos += steering.x;
+          yPos += steering.y;
+        }else{
+          targetLocation = p.createVector(p.random(0,600), p.random(0,300));
+        }
+      };
+
+      this.render = function(){
+        p.strokeWeight(10);
+        p.fill(color);
+        p.line(xPos,0, xPos, p.height);
+        p.line(0, yPos,p.width,  yPos);
+        p.line(xPos+width,0, xPos+width, p.height);
+        p.line(0, yPos+height,p.width,  yPos+height);
+        p.rect(xPos,  yPos, width, height);
+      };
+    };
+
+    var Chaser = function( initX, initY, height, width, color){
+
+      // var targetLocation = p.createVector(p.random(0,600), p.random(0,300));
+      var xPos = initX;
+      var yPos = initY;
+      var speed;
+
+      if( !speed ) {
+        speed = 1;
+      }
+
+      this.update = function(targetLocation) {
+        var currentLocation = p.createVector(xPos, yPos);
+        var steering;
+
+        if(Math.floor(targetLocation.x) !== Math.floor(currentLocation.x) && Math.floor(targetLocation.y) !== Math.floor(currentLocation.y)){
+          steering = p5.Vector.sub(targetLocation,currentLocation);
+          steering.normalize();
+          steering.mult(speed);
+          xPos += steering.x;
+          yPos += steering.y;
+        }else{
+          targetLocation = p.createVector(p.random(0,600), p.random(0,300));
+        }
+      };
+
+      this.render = function(){
+        p.strokeWeight(10);
+        p.fill(color);
+        p.line(xPos,0, xPos, p.height);
+        p.line(0, yPos,p.width,  yPos);
+        p.line(xPos+width,0, xPos+width, p.height);
+        p.line(0, yPos+height,p.width,  yPos+height);
+        p.rect(xPos,  yPos, width, height);
+      };
+    };
+
+    var red = new Cell(0,  0, 200, 150, 'red');
+    var blue = new Cell(0, 0, 100, 250, 'blue', 3);
+    var yellow = new Chaser(550, 450, 50, 50, 'yellow');
+
+    p.setup = function() {
+      p.createCanvas(800, 500);
+      p.background(255);
+    };
+
+
+    var yellowTarget;
+    p.draw = function() {
+      p.background(255);
+
+      blue.update();
+      blue.render();
+
+      red.update();
+      red.render();
+      yellowTarget = blue.getLocation();
+
+      yellow.update(yellowTarget);
+      yellow.render();
+
+    };
+  };
+
+  var art = new p5(paint);
+
+  </script>
+</body>
+</html>

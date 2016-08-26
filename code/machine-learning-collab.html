@@ -1,0 +1,124 @@
+
+
+<html>
+<head>
+  <title></title>
+  <style>
+
+  body {
+    background-color: #f5f5f5;
+    font-size: 16px;
+  }
+
+  .wrapper {
+    margin: 0 auto;
+    text-align: center;
+    width: 1000px;
+  }
+
+  canvas {
+    display: inline-block;
+    margin: auto;
+  }
+
+
+  </style>
+</head>
+
+<body>
+
+  <script type="text/javascript" src="js/p5.js"></script>
+  <script type="text/javascript" src="js/synaptic.js"></script>
+  <script type="text/javascript" src="js/dat.gui.js"></script>
+
+    <img src="portrait.jpg" id="target" alt="" style="display:none">
+    <canvas id="_canvas" style="display:none"></canvas>
+
+  <script>
+    //Initialize Synaptic
+    var Neuron = synaptic.Neuron,
+    Layer = synaptic.Layer,
+    Network = synaptic.Network,
+    Trainer = synaptic.Trainer,
+    Architect = synaptic.Architect;
+
+    var canvas = document.getElementById('_canvas');
+    var context = canvas.getContext('2d');
+
+    var perceptron = new Architect.Perceptron(2,15,3);;
+    var iteration = 0;
+    var to = null;
+    var px = null;
+    var imageData = null;
+    var maxIteration = 1000;
+
+    var sourceImage = document.getElementById('target');
+    var getPixelData = function(imageObj){
+
+      var imageContext = canvas.getContext('2d');
+      var imageData;
+      imageContext.drawImage(imageObj, 0, 0);
+      imageData = imageContext.getImageData(0, 0, 300, 300);
+      return imageData.data;
+    }
+
+    var imgData = getPixelData(sourceImage);
+
+    var iterate = function(){
+      for (var x = 0; x < 300; x+=1)
+      {
+        for(var y = 0; y < 300; y+=1)
+        {
+          var dynamicRate =  .01/(1+.0005*iteration);
+          perceptron.activate([x/300,y/300]);
+          perceptron.propagate(dynamicRate, pixel(imgData,x,y));
+        }
+      }
+    };
+
+    var pixel = function(data,x,y){
+
+      var red = data[((300 * y) + x) * 4];
+      var green = data[((300 * y) + x) * 4 + 1];
+      var blue = data[((300 * y) + x) * 4 + 2];
+
+      return [red / 255, green / 255, blue / 255];
+    };
+
+    for(var i =0; i < 200; i++){
+      iterate();
+    }
+
+    function setup() {
+      background(255);
+      createCanvas(300,300);
+      blendMode(LIGHTEST);
+    }
+
+    function draw () {
+      var x = random(300);
+      var y = random(300);
+      var rgb = perceptron.activate([x/300, y/300]);
+      var red = sin(rgb[0])*255;
+      var green = rgb[1]*255;
+      var blue = rgb[2]*255;
+      var radius = random(25);
+      noStroke();
+
+      if(Math.floor(random(100)) % 2  ){
+        fill(color(red, green, blue, 100));
+      }else{
+        fill(color(random(255),0,0, 50));
+      }
+
+      ellipse(x, y, radius, radius);
+
+
+    }
+
+
+    </script>
+
+
+  </body>
+  </html>
