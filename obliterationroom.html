@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+
+      body {
+        background-color: #f5f5f5;
+        font-size: 16px;
+      }
+
+      canvas {
+        display: block;
+        margin: 1em auto;
+      }
+
+
+    </style>
+  </head>
+
+  <body>
+  <script src="p5.js"></script>
+  <script>
+    var numberOfSpots = 100;
+    var spots = [];
+    var colors;
+
+    function setup(){
+
+      colors = [
+        color(255,20,147),
+        color(0, 0, 255),
+        color(255, 255, 0),
+        color(0, 255, 0 ),
+        color(255, 69, 0)
+      ];
+
+      createCanvas(800, 500);
+      background(255);
+      noStroke();
+      frameRate(5);
+    }
+
+    function draw(){
+
+      if(numberOfSpots !== spots.length){
+        var randomWidth = random(10, 50);
+        var randomColor = Math.floor(Math.random() * (colors.length));
+        var randomX = randomGaussian(width/2, 100);
+        var randomY = randomGaussian(height/2, 100);
+
+        spots.push({
+          render: function(){
+
+            fill(colors[randomColor]);
+            ellipse(
+              randomX,
+              randomY,
+              randomWidth,
+              randomWidth
+            );
+          }
+        });
+
+      }
+
+      for (var i = 0; i < spots.length; i++) {
+        spots[i].render();
+      };
+
+    }
+  </script>
+  </body>
+</html>
