@@ -10,7 +10,8 @@ Hello! This repo contains materials related to the talk I gave at JSConf Iceland
 > In the recent past, creating art for the web - usually in the form of Flash or Java applets - was a completely separate workflow from developing business logic for an app. This talk will show that these workflows can be combined. Also, learning the basics of generative art and how to “draw” for the web is creative and fun!
 
 ### Contents
-- [Slides](https://github.com/amycheng/create-art-with-js/blob/master/slides.pdf)
+- [Slides presented at JSConf Iceland 2016](https://github.com/amycheng/create-art-with-js/blob/master/slides-jsconf.pdf)
+- [Slides presentd at NOrdicJS 2016](https://github.com/amycheng/create-art-with-js/blob/master/slides-nordicjs.pdf)
 - [Source Files for Demos](https://github.com/amycheng/create-art-with-js/tree/master/code)
 - [Demos](https://amycheng.github.io/create-art-with-js)
 - [List of JavaScript Tools Mentioned](https://github.com/amycheng/create-art-with-js/blob/master/js-tools.md)
