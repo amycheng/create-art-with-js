@@ -2,7 +2,7 @@ Recreate Masterpieces of Modern Art with JavaScript!
 ====================================================
 ## A talk by [Amy Cheng](http://amycheng.info)
 
-Hello! This repo contains materials related to the talk I gave at JSConf Iceland 2016 and will give at [NordicJS 2016](http://nordicjs.com/).
+Hello! This repo contains materials related to the talk I gave at JSConf Iceland 2016 and will give at NordicJS 2016.
 
 ### Talk Description
 > JavaScript is not just for web apps. This talk looks at JavaScript as an artistic and visual programming language and serves as a primer on generative art. The audience will learn how to recreate one of Damien Hirst’s Spot paintings and one of Piet Mondrian’s Composition paintings in the browser. JavaScript is commonly used to manage interactivity, data, and application states. However, we will use masterpieces of modern art to illustrate JavaScript’s potential to manipulate visual space, color and shape.
